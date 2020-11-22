@@ -19,24 +19,19 @@ using std::vector;
 #define ERROR -2
 #define DEFAULT_SET -1
 
-const double PI = 3.14159265;            // 圆周率
-const double x1max = 12.0;               // 坐标 1 上限
-const double x1min = -2.9;               // 坐标 1 下限
-const double x2max = 5.7;                // 坐标 2 上限
-const double x2min = 4.2;                // 坐标 2 下限
-const double x1_segmentaion = 2097151.0; // x1 坐标分割数
-const double x2_segmentaion = 262143.0;  // x2 坐标分割数
+const double PI = 3.14159265;         // 圆周率
+const double xmax = 2.0;              // 坐标上限
+const double xmin = -2.0;             // 坐标下限
+const double x_segmentaion = 65535.0; // x 坐标分割数
 
-const int bits_snum = 39;            // 二进制编码位数
-const int bits_x1 = 21;              // 坐标 1 所占的二进制编码位数
-const int bits_x2 = 18;              // 坐标 2 所占的二进制编码位数
-const int population_size = 70;      // 种群规模
-const int num_of_iteration = 1000;   // 迭代次数
+const int bits_snum = 16;           // 二进制编码位数
+const int population_size = 50;     // 种群规模
+const int num_of_iteration = 500;   // 迭代次数
 const double cross_coef1 = 0.65;     // 自适应交叉概率系数（针对较好个体）
-const double cross_coef2 = 0.7;      // 自适应交叉概率系数（针对较坏个体）
-const double cross_floor = 0.25;      // 自适应交叉概率地板值
-const double mutation_coef1 = 0.01;  // 自适应变异概率系数（针对较好个体）
-const double mutation_coef2 = 0.03;  // 自适应变异概率系数（针对较坏个体）
+const double cross_coef2 = 0.7;     // 自适应交叉概率系数（针对较坏个体）
+const double cross_floor = 0.25;     // 自适应交叉概率地板值
+const double mutation_coef1 = 0.01; // 自适应变异概率系数（针对较好个体）
+const double mutation_coef2 = 0.03; // 自适应变异概率系数（针对较坏个体）
 const double mutation_floor = 0.005; // 自适应变异概率地板值
 
 typedef int Status;
@@ -55,25 +50,31 @@ void Dec_to_Bin(stack<int> &x_binary, int j);
 class Point
 {
 protected:
-    double x1$;             // 自变量坐标 1
-    double x2$;             // 自变量坐标 2
+    double x$;              // 自变量坐标 1
     double fitness$;        // 个体适应度（取与目标函数值一致）
     double cumula_prob$;    // 该个体的累计概率
     vector<int> x_bincode$; // 自变量二进制编码
 
 public:
     // 构造函数
-    Point() : x1$(DEFAULT_SET), x2$(DEFAULT_SET), fitness$(DEFAULT_SET), cumula_prob$(DEFAULT_SET) {}
+    Point() : x$(DEFAULT_SET), fitness$(DEFAULT_SET), cumula_prob$(DEFAULT_SET) {}
 
-    Point(double x1, double x2) : x1$(x1), x2$(x2), cumula_prob$(DEFAULT_SET)
+    Point(double x) : x$(x), cumula_prob$(DEFAULT_SET)
     {
         // 初始适应度计算
-        fitness$ = 21.5 + x1$ * sin(4.0 * PI * x1$) + x2$ * sin(20.0 * PI * x2$);
+        if (x == 0)
+        {
+            fitness$ = 0.4 + 1.0 + 1.1 * 1.0 + 0.8 * 1.0 + 0.7 * 1.0;
+        }
+        else
+        {
+            fitness$ = 0.4 + (sin(PI * 4.0 * x) / (PI * 4.0 * x)) + 1.1 * (sin(PI * (4.0 * x + 2.0)) / (PI * (4.0 * x + 2.0))) + 0.8 * (sin(PI * (x - 2.0)) / (PI * (x - 2.0))) + 0.7 * (sin(PI * (6.0 * x - 4.0)) / (PI * (6.0 * x - 4.0)));
+        }
         Encode();
     }
 
     // 拷贝构造函数
-    Point(const Point &tt) : x1$(tt.x1$), x2$(tt.x2$), fitness$(tt.fitness$), cumula_prob$(tt.cumula_prob$)
+    Point(const Point &tt) : x$(tt.x$), fitness$(tt.fitness$), cumula_prob$(tt.cumula_prob$)
     {
         x_bincode$.clear(); // 先清空，再深拷贝
         for (int i = 0; i < bits_snum; i++)
@@ -89,7 +90,7 @@ public:
     bool operator==(const Point &d)
     {
         // 十进制坐标一致即可判相等
-        if ((x1$ == d.x1$) && (x2$ == d.x2$))
+        if (x$ == d.x$)
             return true;
         else
             return false;
@@ -98,7 +99,7 @@ public:
     bool operator!=(const Point &d)
     {
         // 十进制坐标出现不一致即可以判不相等
-        if ((x1$ != d.x1$) || (x2$ != d.x2$))
+        if (x$ != d.x$)
             return true;
         else
             return false;
@@ -106,8 +107,7 @@ public:
 
     Point operator=(const Point &tt)
     {
-        x1$ = tt.x1$;
-        x2$ = tt.x2$;
+        x$ = tt.x$;
         fitness$ = tt.fitness$;
         cumula_prob$ = tt.cumula_prob$;
 
@@ -119,11 +119,8 @@ public:
         return (*this);
     }
 
-    // 获取坐标 1（十进制）
-    double Get_X1() const { return x1$; }
-
-    // 获取坐标 2（十进制）
-    double Get_X2() const { return x2$; }
+    // 获取坐标（十进制）
+    double Get_X() const { return x$; }
 
     // 获取该个体的适应度
     double Get_Fitness() const { return fitness$; }
@@ -134,14 +131,8 @@ public:
     // 获取一个指定的二进制位
     int Get_Bit(int pos) const { return x_bincode$[pos]; }
 
-    // 设置坐标 1（十进制）
-    Status Set_X1(double x1);
-
-    // 设置坐标 2（十进制）
-    Status Set_X2(double x2);
-
     // 设置坐标（十进制）
-    Status Set_Coordinate(double x1, double x2);
+    Status Set_X(double x);
 
     // 修改累计概率
     Status Set_Cumula_Prob(double cumula_prob);
@@ -236,13 +227,11 @@ int main()
     Refresh_Bestinfo(bests_history);
 
     printf("Best point is: \n");
-    printf("(%.5lf, %.5lf);", bests_history[best_id].Get_X1(), bests_history[best_id].Get_X2());
-    printf("\nFitness: %.5lf.\n", bests_history[best_id].Get_Fitness());
+    printf("(%.4lf, %.4lf);", bests_history[best_id].Get_X(), bests_history[best_id].Get_Fitness());
+    printf("\nFitness: %.4lf.\n", bests_history[best_id].Get_Fitness());
 
     return 0;
 }
-
-
 
 // 十进制转二进制
 void Dec_to_Bin(stack<int> &x_binary, int j)
@@ -262,24 +251,10 @@ int Max(const int &a, const int &b)
     return (a > b) ? a : b;
 }
 
-// 设置坐标 1（十进制）
-Status Point::Set_X1(double x1)
-{
-    x1$ = x1;
-    return OK;
-}
-
-// 设置坐标 2（十进制）
-Status Point::Set_X2(double x2)
-{
-    x2$ = x2;
-    return OK;
-}
-
 // 设置坐标（十进制）
-Status Point::Set_Coordinate(double x1, double x2)
+Status Point::Set_X(double x)
 {
-    x1$ = x1, x2$ = x2;
+    x$ = x;
     return OK;
 }
 
@@ -317,45 +292,31 @@ bool Fitness_Greater(const Point &a, const Point &b)
 Status Point::Encode()
 {
     // 针对非法十进制坐标返回错误代码
-    if (x1$ > x1max || x1$ < x1min || x2$ > x2max || x2$ < x2min)
+    if (x$ > xmax || x$ < xmin)
         return ERROR;
 
     //printf("Encode!\n");
     // 由 十进制坐标 获得 十进制数字串 j
-    int j1 = ((x1$ - x1min) / (x1max - x1min)) * x1_segmentaion;
-    int j2 = ((x2$ - x2min) / (x2max - x2min)) * x2_segmentaion;
+    int j = ((x$ - xmin) / (xmax - xmin)) * x_segmentaion;
     //printf("--%d %d--\n", j1, j2);
 
-    stack<int> tt1, tt2;
+    stack<int> tt;
 
-    Dec_to_Bin(tt1, j1);
-    Dec_to_Bin(tt2, j2);
+    Dec_to_Bin(tt, j);
 
-    int size1 = tt1.size(), size2 = tt2.size();
+    int size = tt.size();
     x_bincode$.clear();
 
     // 前导零
-    for (int i = 0; i < bits_x1 - size1; i++)
+    for (int i = 0; i < bits_snum - size; i++)
     {
         x_bincode$.push_back(0);
     }
 
-    for (int i = 0; i < size1; i++)
+    for (int i = 0; i < size; i++)
     {
-        x_bincode$.push_back(tt1.top());
-        tt1.pop();
-    }
-
-    // 前导零
-    for (int i = 0; i < bits_x2 - size2; i++)
-    {
-        x_bincode$.push_back(0);
-    }
-
-    for (int i = 0; i < size2; i++)
-    {
-        x_bincode$.push_back(tt2.top());
-        tt2.pop();
+        x_bincode$.push_back(tt.top());
+        tt.pop();
     }
     return OK;
 }
@@ -364,26 +325,26 @@ Status Point::Encode()
 Status Point::Decode()
 {
     //printf("Decode!\n");
-    int j1 = 0, j2 = 0;
-    for (int i = 0; i < bits_x1; i++)
+    int j = 0;
+    for (int i = 0; i < bits_snum; i++)
     {
-        j1 += x_bincode$[i] * pow(2.0, bits_x1 - i - 1);
+        j += x_bincode$[i] * pow(2.0, bits_snum - i - 1);
     }
-
-    for (int i = bits_x1; i < bits_snum; i++)
-    {
-        j2 += x_bincode$[i] * pow(2.0, bits_snum - i - 1);
-    }
-
-    x1$ = x1min + j1 * ((x1max - x1min) / x1_segmentaion);
-    x2$ = x2min + j2 * ((x2max - x2min) / x2_segmentaion);
+    x$ = xmin + j * ((xmax - xmin) / x_segmentaion);
     return OK;
 }
 
 // 刷新该个体的适应度（坐标值改变的情况下）
 Status Point::Refresh_Fitness()
 {
-    fitness$ = 21.5 + x1$ * sin(4.0 * PI * x1$) + x2$ * sin(20.0 * PI * x2$);
+    if (x$ == 0)
+    {
+        fitness$ = 0.4 + 1.0 + 1.1 * 1.0 + 0.8 * 1.0 + 0.7 * 1.0;
+    }
+    else
+    {
+        fitness$ = 0.4 + (sin(PI * 4.0 * x$) / (PI * 4.0 * x$)) + 1.1 * (sin(PI * (4.0 * x$ + 2.0)) / (PI * (4.0 * x$ + 2.0))) + 0.8 * (sin(PI * (x$ - 2.0)) / (PI * (x$ - 2.0))) + 0.7 * (sin(PI * (6.0 * x$ - 4.0)) / (PI * (6.0 * x$ - 4.0)));
+    }
     return OK;
 }
 
@@ -391,15 +352,14 @@ Status Point::Refresh_Fitness()
 Status initialize(vector<Point> &origin)
 {
     //printf("Init!\n");
-    static std::default_random_engine e1, e2;
-    e1.seed((unsigned int)time(NULL) * 10013), e2.seed((unsigned int)time(NULL) * 10013);
-    static std::uniform_real_distribution<double> u1(x1min, x1max);
-    static std::uniform_real_distribution<double> u2(x2min, x2max);
+    static std::default_random_engine e1;
+    e1.seed((unsigned int)time(NULL) * 10013);
+    static std::uniform_real_distribution<double> u1(xmin, xmax);
 
     // 随机产生个体
     for (int i = 0; i < population_size; i++)
     {
-        Point tt(u1(e1), u2(e2)); // 初始适应度已在构造时计算，二进制码已生成
+        Point tt(u1(e1)); // 初始适应度已在构造时计算，二进制码已生成
         vector<Point>::iterator pt = find(origin.begin(), origin.end(), tt);
 
         // 已有该个体
