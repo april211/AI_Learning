@@ -27,17 +27,17 @@ const double x2min = 4.2;                // 坐标 2 下限
 const double x1_segmentaion = 2097151.0; // x1 坐标分割数
 const double x2_segmentaion = 262143.0;  // x2 坐标分割数
 
-const int bits_snum = 39;            // 二进制编码位数
-const int bits_x1 = 21;              // 坐标 1 所占的二进制编码位数
-const int bits_x2 = 18;              // 坐标 2 所占的二进制编码位数
-const int population_size = 70;      // 种群规模
-const int num_of_iteration = 1000;   // 迭代次数
-const double cross_coef1 = 0.65;     // 自适应交叉概率系数（针对较好个体）
-const double cross_coef2 = 0.7;      // 自适应交叉概率系数（针对较坏个体）
-const double cross_floor = 0.25;     // 自适应交叉概率地板值
-const double mutation_coef1 = 0.01;  // 自适应变异概率系数（针对较好个体）
-const double mutation_coef2 = 0.03;  // 自适应变异概率系数（针对较坏个体）
-const double mutation_floor = 0.005; // 自适应变异概率地板值
+const int bits_snum = 39;           // 二进制编码位数
+const int bits_x1 = 21;             // 坐标 1 所占的二进制编码位数
+const int bits_x2 = 18;             // 坐标 2 所占的二进制编码位数
+const int population_size = 60;     // 种群规模
+const int num_of_iteration = 1000;  // 迭代次数
+const double cross_coef1 = 0.55;    // 自适应交叉概率系数（针对较好个体）
+const double cross_coef2 = 0.7;     // 自适应交叉概率系数（针对较坏个体）
+const double cross_floor = 0.35;    // 自适应交叉概率地板值
+const double mutation_coef1 = 0.45; // 自适应变异概率系数（针对较好个体）
+const double mutation_coef2 = 0.7;  // 自适应变异概率系数（针对较坏个体）
+const double mutation_floor = 0.2;  // 自适应变异概率地板值
 
 typedef int Status;
 
@@ -120,19 +120,34 @@ public:
     }
 
     // 获取坐标 1（十进制）
-    double Get_X1() const { return x1$; }
+    double Get_X1() const
+    {
+        return x1$;
+    }
 
     // 获取坐标 2（十进制）
-    double Get_X2() const { return x2$; }
+    double Get_X2() const
+    {
+        return x2$;
+    }
 
     // 获取该个体的适应度
-    double Get_Fitness() const { return fitness$; }
+    double Get_Fitness() const
+    {
+        return fitness$;
+    }
 
     // 获取该个体的累计概率
-    double Get_Cumula_Prob() const { return cumula_prob$; }
+    double Get_Cumula_Prob() const
+    {
+        return cumula_prob$;
+    }
 
     // 获取一个指定的二进制位
-    int Get_Bit(int pos) const { return x_bincode$[pos]; }
+    int Get_Bit(int pos) const
+    {
+        return x_bincode$[pos];
+    }
 
     // 设置坐标 1（十进制）
     Status Set_X1(double x1);
@@ -193,56 +208,65 @@ Status mutation(vector<Point> &random_chosen);
 
 int main()
 {
-    // 初始种群
-    vector<Point> origin;
+    int success_cnt = 0;
+    int trial = 100;
 
-    // 单个点
-    Point single;
-
-    // 选择复制后的种群
-    vector<Point> random_chosen;
-
-    // 每次迭代后产生的最优个体
-    vector<Point> bests_history;
-
-    // 形成初始化种群
-    initialize(origin);
-
-    Refresh_Bestinfo(origin);
-
-    // 迭代
-    for (int i = 0; i < num_of_iteration; i++)
+    for (int i = 0; i < trial; i++)
     {
-        // 执行 选择算子
-        select(origin, random_chosen);
+        // 初始种群
+        vector<Point> origin;
 
-        Refresh_Bestinfo(random_chosen);
+        // 单个点
+        Point single;
 
-        // 执行 1-断点交叉算子
-        cross_over(random_chosen);
+        // 选择复制后的种群
+        vector<Point> random_chosen;
 
-        // 执行变异算子
-        mutation(random_chosen);
+        // 每次迭代后产生的最优个体
+        vector<Point> bests_history;
 
-        // 保留此次迭代的最优个体信息
-        bests_history.push_back(random_chosen[best_id]);
+        // 形成初始化种群
+        initialize(origin);
 
-        origin.clear();
-        origin = random_chosen;
-        random_chosen.clear();
+        Refresh_Bestinfo(origin);
+        // 迭代
+        for (int i = 0; i < num_of_iteration; i++)
+        {
+            // 执行 选择算子
+            select(origin, random_chosen);
+
+            Refresh_Bestinfo(random_chosen);
+
+            // 执行 1-断点交叉算子
+            cross_over(random_chosen);
+
+            // 执行变异算子
+            mutation(random_chosen);
+
+            // 保留此次迭代的最优个体信息
+            bests_history.push_back(random_chosen[best_id]);
+
+            origin.clear();
+            origin = random_chosen;
+            random_chosen.clear();
+        }
+
+        // 更新全局最优个体信息
+        Refresh_Bestinfo(bests_history);
+
+        if (bests_history[best_id].Get_Fitness() > 38.0)
+            ++success_cnt;
+
+        printf("Trial %d:\n", i + 1);
+        printf("Best point is: \n");
+        printf("(%.5lf, %.5lf, %.5lf);", bests_history[best_id].Get_X1(), bests_history[best_id].Get_X2(), bests_history[best_id].Get_Fitness());
+        printf("\nFitness: %.5lf.\n", bests_history[best_id].Get_Fitness());
     }
 
-    // 更新全局最优个体信息
-    Refresh_Bestinfo(bests_history);
-
-    printf("Best point is: \n");
-    printf("(%.5lf, %.5lf, %.5lf);", bests_history[best_id].Get_X1(), bests_history[best_id].Get_X2(), bests_history[best_id].Get_Fitness());
-    printf("\nFitness: %.5lf.\n", bests_history[best_id].Get_Fitness());
+    printf("Successful probability: %.2lf\n", (success_cnt * 1.0) / (trial * 1.0));
 
     return 0;
 }
-
-
 
 // 十进制转二进制
 void Dec_to_Bin(stack<int> &x_binary, int j)
@@ -483,7 +507,8 @@ Status cross_over(vector<Point> &random_chosen)
         // 先通过随机数选出两个个体
         int chrome1 = u2(e), chrome2 = u2(e); // 即将由随机数选出的两个个体（染色体）
         while ((chrome1 == chrome2) || (chrome1 == best_id) || (chrome2 == best_id))
-        { // 不会将最优个体拿来交叉，即当随机数与最佳序号相等时，继续执行
+        {
+            // 不会将最优个体拿来交叉，即当随机数与最佳序号相等时，继续执行
             chrome1 = u2(e);
             chrome2 = u2(e);
         }
@@ -573,7 +598,8 @@ Status mutation(vector<Point> &random_chosen)
         // 随机选定变异个体
         int chrome = u1(e);
         while (chrome == best_id)
-        { // 不会将最优个体拿来交叉，即当随机数与最佳序号相等时，继续执行
+        {
+            // 不会将最优个体拿来交叉，即当随机数与最佳序号相等时，继续执行
             chrome = u1(e);
         }
 
