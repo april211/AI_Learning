@@ -30,7 +30,7 @@ const double x2_segmentaion = 262143.0;  // x2 坐标分割数
 const int bits_snum = 39;           // 二进制编码位数
 const int bits_x1 = 21;             // 坐标 1 所占的二进制编码位数
 const int bits_x2 = 18;             // 坐标 2 所占的二进制编码位数
-const int population_size = 60;     // 种群规模
+const int population_size = 80;     // 种群规模
 const int num_of_iteration = 1000;  // 迭代次数
 const double cross_coef1 = 0.55;    // 自适应交叉概率系数（针对较好个体）
 const double cross_coef2 = 0.7;     // 自适应交叉概率系数（针对较坏个体）
@@ -657,3 +657,407 @@ Status mutation(vector<Point> &random_chosen)
     }
     return OK;
 }
+
+
+/*
+Trial 1:
+Best point is:
+(11.61816, 5.32284, 38.34916);
+Fitness: 38.34916.
+Trial 2:
+Best point is:
+(11.62780, 5.62487, 38.74530);
+Fitness: 38.74530.
+Trial 3:
+Best point is:
+(11.62000, 5.52579, 38.61606);
+Fitness: 38.61606.
+Trial 4:
+Best point is:
+(11.65343, 5.62646, 38.02035);
+Fitness: 38.02035.
+Trial 5:
+Best point is:
+(11.64084, 5.52468, 38.43453);
+Fitness: 38.43453.
+Trial 6:
+Best point is:
+(11.12590, 5.22906, 37.68530);
+Fitness: 37.68530.
+Trial 7:
+Best point is:
+(11.62532, 5.22764, 38.28094);
+Fitness: 38.28094.
+Trial 8:
+Best point is:
+(11.62985, 5.42686, 38.49799);
+Fitness: 38.49799.
+Trial 9:
+Best point is:
+(11.61983, 5.22974, 38.09446);
+Fitness: 38.09446.
+Trial 10:
+Best point is:
+(10.12397, 5.62542, 37.24660);
+Fitness: 37.24660.
+Trial 11:
+Best point is:
+(11.61596, 5.42264, 38.40422);
+Fitness: 38.40422.
+Trial 12:
+Best point is:
+(11.62224, 5.61412, 37.46730);
+Fitness: 37.46730.
+Trial 13:
+Best point is:
+(11.62602, 5.62306, 38.70620);
+Fitness: 38.70620.
+Trial 14:
+Best point is:
+(9.60918, 5.62855, 36.40916);
+Fitness: 36.40916.
+Trial 15:
+Best point is:
+(9.60600, 5.32574, 36.15345);
+Fitness: 36.15345.
+Trial 16:
+Best point is:
+(11.62142, 5.62253, 38.66490);
+Fitness: 38.66490.
+Trial 17:
+Best point is:
+(11.62431, 5.62380, 38.73183);
+Fitness: 38.73183.
+Trial 18:
+Best point is:
+(11.63031, 5.61871, 38.29032);
+Fitness: 38.29032.
+Trial 19:
+Best point is:
+(10.13576, 4.73852, 34.67223);
+Fitness: 34.67223.
+Trial 20:
+Best point is:
+(11.62846, 5.32559, 38.43944);
+Fitness: 38.43944.
+Trial 21:
+Best point is:
+(11.65840, 5.22567, 37.36721);
+Fitness: 37.36721.
+Trial 22:
+Best point is:
+(9.62745, 5.32910, 36.27652);
+Fitness: 36.27652.
+Trial 23:
+Best point is:
+(11.12307, 5.32274, 37.88918);
+Fitness: 37.88918.
+Trial 24:
+Best point is:
+(11.62325, 5.42542, 38.54396);
+Fitness: 38.54396.
+Trial 25:
+Best point is:
+(11.14253, 5.52538, 37.89717);
+Fitness: 37.89717.
+Trial 26:
+Best point is:
+(11.61703, 5.62727, 38.62904);
+Fitness: 38.62904.
+Trial 27:
+Best point is:
+(11.62294, 4.52664, 37.62154);
+Fitness: 37.62154.
+Trial 28:
+Best point is:
+(9.62367, 5.33071, 36.11371);
+Fitness: 36.11371.
+Trial 29:
+Best point is:
+(11.13698, 5.52335, 38.00490);
+Fitness: 38.00490.
+Trial 30:
+Best point is:
+(11.11493, 5.23307, 37.10107);
+Fitness: 37.10107.
+Trial 31:
+Best point is:
+(11.63068, 5.42439, 38.52139);
+Fitness: 38.52139.
+Trial 32:
+Best point is:
+(11.64299, 5.33090, 37.81562);
+Fitness: 37.81562.
+Trial 33:
+Best point is:
+(11.12214, 5.52418, 38.13174);
+Fitness: 38.13174.
+Trial 34:
+Best point is:
+(11.62456, 5.52462, 38.64741);
+Fitness: 38.64741.
+Trial 35:
+Best point is:
+(11.11058, 5.62509, 38.05356);
+Fitness: 38.05356.
+Trial 36:
+Best point is:
+(11.61671, 5.62518, 38.67849);
+Fitness: 38.67849.
+Trial 37:
+Best point is:
+(11.62229, 5.62534, 38.73962);
+Fitness: 38.73962.
+Trial 38:
+Best point is:
+(10.61942, 5.52081, 37.42426);
+Fitness: 37.42426.
+Trial 39:
+Best point is:
+(10.13352, 5.62207, 37.10226);
+Fitness: 37.10226.
+Trial 40:
+Best point is:
+(11.60600, 5.62744, 38.33824);
+Fitness: 38.33824.
+Trial 41:
+Best point is:
+(11.63661, 5.42535, 38.43696);
+Fitness: 38.43696.
+Trial 42:
+Best point is:
+(11.63988, 5.52501, 38.46212);
+Fitness: 38.46212.
+Trial 43:
+Best point is:
+(11.63418, 5.22519, 38.28159);
+Fitness: 38.28159.
+Trial 44:
+Best point is:
+(11.63214, 5.62247, 38.63673);
+Fitness: 38.63673.
+Trial 45:
+Best point is:
+(11.61695, 5.43075, 38.13734);
+Fitness: 38.13734.
+Trial 46:
+Best point is:
+(10.65809, 5.51941, 36.43224);
+Fitness: 36.43224.
+Trial 47:
+Best point is:
+(11.62662, 5.62632, 38.73112);
+Fitness: 38.73112.
+Trial 48:
+Best point is:
+(11.61877, 5.42827, 38.39729);
+Fitness: 38.39729.
+Trial 49:
+Best point is:
+(11.12146, 5.02176, 37.52874);
+Fitness: 37.52874.
+Trial 50:
+Best point is:
+(11.63644, 4.72402, 37.73146);
+Fitness: 37.73146.
+Trial 51:
+Best point is:
+(11.61634, 5.62098, 38.49015);
+Fitness: 38.49015.
+Trial 52:
+Best point is:
+(11.62141, 5.42705, 38.49185);
+Fitness: 38.49185.
+Trial 53:
+Best point is:
+(11.62535, 5.62517, 38.75008);
+Fitness: 38.75008.
+Trial 54:
+Best point is:
+(11.62782, 5.12125, 38.10050);
+Fitness: 38.10050.
+Trial 55:
+Best point is:
+(11.10352, 5.62738, 37.76601);
+Fitness: 37.76601.
+Trial 56:
+Best point is:
+(10.62319, 4.62350, 36.72330);
+Fitness: 36.72330.
+Trial 57:
+Best point is:
+(10.61653, 5.62556, 37.67859);
+Fitness: 37.67859.
+Trial 58:
+Best point is:
+(11.61671, 5.32385, 38.36359);
+Fitness: 38.36359.
+Trial 59:
+Best point is:
+(11.12197, 5.62565, 38.23492);
+Fitness: 38.23492.
+Trial 60:
+Best point is:
+(11.64485, 5.32712, 38.06461);
+Fitness: 38.06461.
+Trial 61:
+Best point is:
+(11.63019, 5.22542, 38.32903);
+Fitness: 38.32903.
+Trial 62:
+Best point is:
+(11.62111, 5.52416, 38.62361);
+Fitness: 38.62361.
+Trial 63:
+Best point is:
+(11.62427, 5.62564, 38.74486);
+Fitness: 38.74486.
+Trial 64:
+Best point is:
+(11.62940, 5.12545, 38.23503);
+Fitness: 38.23503.
+Trial 65:
+Best point is:
+(11.62144, 5.42385, 38.51942);
+Fitness: 38.51942.
+Trial 66:
+Best point is:
+(11.63277, 5.32075, 38.20978);
+Fitness: 38.20978.
+Trial 67:
+Best point is:
+(11.60650, 5.52373, 38.30043);
+Fitness: 38.30043.
+Trial 68:
+Best point is:
+(11.62635, 5.52559, 38.64645);
+Fitness: 38.64645.
+Trial 69:
+Best point is:
+(11.12876, 4.92377, 37.52546);
+Fitness: 37.52546.
+Trial 70:
+Best point is:
+(11.62318, 5.52526, 38.64466);
+Fitness: 38.64466.
+Trial 71:
+Best point is:
+(11.62611, 5.42176, 38.43469);
+Fitness: 38.43469.
+Trial 72:
+Best point is:
+(11.61857, 5.62492, 38.70548);
+Fitness: 38.70548.
+Trial 73:
+Best point is:
+(11.63624, 5.31172, 36.58869);
+Fitness: 36.58869.
+Trial 74:
+Best point is:
+(11.65397, 5.52394, 37.90178);
+Fitness: 37.90178.
+Trial 75:
+Best point is:
+(9.62882, 5.62581, 36.73630);
+Fitness: 36.73630.
+Trial 76:
+Best point is:
+(11.10108, 5.42813, 37.42717);
+Fitness: 37.42717.
+Trial 77:
+Best point is:
+(11.61342, 5.62406, 38.60478);
+Fitness: 38.60478.
+Trial 78:
+Best point is:
+(11.63667, 5.51795, 37.99664);
+Fitness: 37.99664.
+Trial 79:
+Best point is:
+(11.62505, 5.02558, 38.14729);
+Fitness: 38.14729.
+Trial 80:
+Best point is:
+(11.62957, 5.32266, 38.37581);
+Fitness: 38.37581.
+Trial 81:
+Best point is:
+(11.62099, 5.32548, 38.42931);
+Fitness: 38.42931.
+Trial 82:
+Best point is:
+(11.12665, 5.52366, 38.12845);
+Fitness: 38.12845.
+Trial 83:
+Best point is:
+(7.62654, 5.62504, 34.75013);
+Fitness: 34.75013.
+Trial 84:
+Best point is:
+(11.11539, 5.62275, 38.10113);
+Fitness: 38.10113.
+Trial 85:
+Best point is:
+(11.60361, 5.62542, 38.31049);
+Fitness: 38.31049.
+Trial 86:
+Best point is:
+(11.61629, 5.32725, 38.32069);
+Fitness: 38.32069.
+Trial 87:
+Best point is:
+(10.12438, 5.52233, 37.06886);
+Fitness: 37.06886.
+Trial 88:
+Best point is:
+(11.62839, 4.92511, 38.04281);
+Fitness: 38.04281.
+Trial 89:
+Best point is:
+(8.11937, 4.62796, 34.14698);
+Fitness: 34.14698.
+Trial 90:
+Best point is:
+(11.10913, 5.53033, 37.61158);
+Fitness: 37.61158.
+Trial 91:
+Best point is:
+(11.61700, 4.62569, 37.67961);
+Fitness: 37.67961.
+Trial 92:
+Best point is:
+(11.61632, 5.62865, 38.52894);
+Fitness: 38.52894.
+Trial 93:
+Best point is:
+(11.61575, 5.13388, 37.39248);
+Fitness: 37.39248.
+Trial 94:
+Best point is:
+(11.62022, 5.62485, 38.72381);
+Fitness: 38.72381.
+Trial 95:
+Best point is:
+(11.62394, 5.62359, 38.72454);
+Fitness: 38.72454.
+Trial 96:
+Best point is:
+(10.12065, 5.62710, 37.18391);
+Fitness: 37.18391.
+Trial 97:
+Best point is:
+(11.62167, 5.62793, 38.64426);
+Fitness: 38.64426.
+Trial 98:
+Best point is:
+(11.11777, 5.02806, 37.50708);
+Fitness: 37.50708.
+Trial 99:
+Best point is:
+(11.61971, 5.42342, 38.49071);
+Fitness: 38.49071.
+Trial 100:
+Best point is:
+(9.62424, 5.22563, 36.34529);
+Fitness: 36.34529.
+Successful probability: 0.63 */
