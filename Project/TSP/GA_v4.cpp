@@ -217,9 +217,9 @@ public:
         return OK;
     }
 
-    // 1-断点交叉算子（仅完成对染色体上部分基因的交换）
+    // 2-断点交叉算子（仅完成对染色体上部分基因的交换）
     Status Cross_Over(Chrome &another_chrome)
-    {
+    {\
         // printf("Cross over Started!\n");
         ++random_disturb;
         std::default_random_engine e;
