@@ -1,4 +1,4 @@
 *.exe
 Single-objective_optimization/2_6_1/tempCodeRunnerFile.cpp
 .vscode/
-Project/Forecasting_Problem_of_Iris_Mountain/__pycache__/Perceptron_Class.cpython-37.pyc
+*.pyc
