@@ -19,42 +19,29 @@ def process_features(X):
 # end
 
 
-
-np.random.seed(0)                               # 产生固定随机数种子
+# 产生训练数据和测试数据
+np.random.seed(0)                                # 产生固定随机数种子
 X_train, y_train = generate_samples(100)
 X_train = process_features(X_train)
-X_test, y_test = generate_samples(100)          # 按照这种写法，测试点集与训练点集实际上是完全相同的
+X_test, y_test = generate_samples(100)           # 按照这种写法，测试点集与训练点集实际上是完全相同的
 X_test = process_features(X_test)
 
+# 学习、存储、预测、评估
 model = lr.LinearRegression()
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 mse = model.mean_squared_error(y_test, y_pred)
 r2 = model.r2_score(y_test, y_pred)
-print("mse = {} and r2 = {}.".format(mse, r2))
+print("mse = {} and r2 = {}.".format(mse, r2))   
 
-plt.style.use('seaborn-darkgrid')                       # 在两个坐标系中分别画出训练数据点与测试数据点
-fig, ax = plt.subplots(figsize=(9, 4))           # a figure with a 1x2 grid of Axes
+# 数据可视化部分
+plt.style.use('seaborn-darkgrid')
+fig, ax = plt.subplots(figsize=(9, 4))
 ax.scatter(X_train[:,1], y_train, c=list(y_train), cmap=plt.cm.seismic, edgecolors='none', s=2)
 
-LX = np.linspace(-1.0, 1.0, 100)                        # 在两个坐标系中画出模型直线
-LY = model.w[1]* LX + model.w[0]
+# 由模型参数绘制拟合直线（斜截式）
+LX = np.linspace(-1.0, 1.0, 100)
+LY = model.w[1]* LX + model.w[0]            # y = kx + b
 ax.plot(LX, LY, linewidth=1)
 
 plt.show()
-
-
-
-"""
-column_stack : Stack 1-D arrays as columns into a 2-D array.
-r_ : For more detailed documentation.
-
-    Examples
-    --------
-    >>> np.c_[np.array([1,2,3]), np.array([4,5,6])]
-    array([[1, 4],
-           [2, 5],
-           [3, 6]])
-    >>> np.c_[np.array([[1,2,3]]), 0, 0, np.array([[4,5,6]])]
-    array([[1, 2, 3, ..., 4, 5, 6]])
-"""
