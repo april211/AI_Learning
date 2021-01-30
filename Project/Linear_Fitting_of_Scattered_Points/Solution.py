@@ -1,4 +1,6 @@
+import sys, os
 import numpy as np
+sys.path.append(os.getcwd() + r'\Modules')
 import matplotlib.pyplot as plt
 import Linear_Regression_Class as lr
 
