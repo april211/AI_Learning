@@ -4,3 +4,6 @@ https://blog.csdn.net/qq_35091353/article/details/111768094
 矩阵求导
 https://blog.csdn.net/u010976453/article/details/54381248
 https://www.cnblogs.com/phoenixash/p/12214673.html
+
+Sklearn中文文档
+http://www.scikitlearn.com.cn/
