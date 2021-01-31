@@ -8,7 +8,7 @@ class LinearRegression:
         self.w = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)          # 存储模型参量：w = inv(X.T·X)·(X.T)·y
 
     def predict(self, X):
-        """模型预测成员函数"""
+        """模型预测成员函数（各特征的线性组合）"""
         return X.dot(self.w)
 
     def mean_squared_error(self, y_true, y_pred):
