@@ -7,3 +7,6 @@ https://www.cnblogs.com/phoenixash/p/12214673.html
 
 Sklearn中文文档
 http://www.scikitlearn.com.cn/
+
+南瓜书
+https://datawhalechina.github.io/pumpkin-book/#/
