@@ -2,7 +2,7 @@ import sys, os
 import numpy as np
 sys.path.append(os.getcwd() + r'\Modules')
 from sklearn.preprocessing import PolynomialFeatures
-import Lasso_Class as lc
+import Lasso_SGD_Class as lc
 import matplotlib.pyplot as plt
 
 
