@@ -8,7 +8,7 @@ class LinearRegressionGD:
         m, n = X.shape
         w = np.zeros((n, 1))
         for t in range(N):
-            e = X.dot(w) - y                # 计算误差和 ('e' for 'Error')
+            e = X.dot(w) - y                # 计算经验损失
             g = 2* X.T.dot(e) / m           # 计算梯度 (均方误差函数在该点之梯度，'g' for "Gradient")
             w -= eta* g                     # 更新特征参数（向着梯度的反方向移动：步长* 梯度）
         self.w = w
