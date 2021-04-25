@@ -9,6 +9,7 @@ import Linear_Regression_Class as lr
 
 def process_features(X):
     """对原始特征数据进行处理（主要进行特征标准化，使各个特征数据处于同一量级）"""
+    # X = X[:, (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)]
     scaler = StandardScaler()                       # 调用 Sklearn提供的的标准化方法对特征进行标准化
     X = scaler.fit_transform(X)
     m, n = X.shape
@@ -21,7 +22,7 @@ X, y = load_diabetes(return_X_y=True)
 y = y.reshape(-1, 1)
 X = process_features(X)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 
 
 model = lr.LinearRegression()
