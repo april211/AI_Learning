@@ -17,7 +17,7 @@ np.random.seed(100)
 X, y = generate_samples(10)
 poly = PolynomialFeatures(degree=10)
 X_poly = poly.fit_transform(X)
-model = rr.RidgeRegression(Lambda=0.01)
+model = rr.RidgeRegression(Lambda=0.001)
 model.fit(X_poly, y)
 
 plt.axis([-1, 1, -2, 2])
@@ -32,6 +32,6 @@ plt.show()
 """
 注意：
 参考书上的本例代码所使用的岭回归类（详见/Modules）与官方代码库中的岭回归类写法不同，
-这里选择了官方代码库上的版本。
-若不使用官方代码库的版本，则不能实现原书32页的目标拟合图像。
+这里选择了书上的版本，因为书上的写法严格符合公式推导。
+若不使用官方代码库的版本，则应当将原书32页的目标拟合图像对应的正则化系数除以样本点数(10)，才能获得书上的图像。
 """

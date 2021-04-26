@@ -9,7 +9,7 @@ class RidgeRegression:
     def fit(self, X, y):
         """模型训练函数"""
         m, n = X.shape
-        r = np.diag(self.Lambda* np.ones(n))         # ** 这里改为与官方代码库一致，官方代码库没有乘以 m **
+        r = m* np.diag(self.Lambda* np.ones(n))         # ** 这里改为与官方代码库一致，官方代码库没有乘以 m **
         self.w = np.linalg.inv(X.T.dot(X) + r).dot(X.T).dot(y)
 
     def predict(self, X):
