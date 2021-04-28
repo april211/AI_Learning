@@ -2,8 +2,9 @@ import numpy as np
 
 
 class StagewiseRegression:
+    "特征选择算法：分段回归"
     def feature_selection(self, X, y, N, eta):
-        """ 特征选择函数 (N : 迭代次数 | eta : 学习步长) """
+        """ 特征选择函数 (N : 迭代次数 | eta : 学习步长) ，完成了模型训练的任务"""
         m, n = X.shape
         norms = np.linalg.norm(X, 2, axis=0).reshape(-1, 1)    # 求 X矩阵各列向量的 L2范数，构成 (n by 1)列向量
         w = np.zeros(n).reshape(-1, 1)
