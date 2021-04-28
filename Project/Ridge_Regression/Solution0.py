@@ -17,7 +17,7 @@ np.random.seed(100)
 X, y = generate_samples(10)
 poly = PolynomialFeatures(degree=10)
 X_poly = poly.fit_transform(X)
-model = rr.RidgeRegression(Lambda=0.001)
+model = rr.RidgeRegression(Lambda=0.05)
 model.fit(X_poly, y)
 
 plt.axis([-1, 1, -2, 2])
