@@ -31,3 +31,15 @@ def recall_score(y, z):
     else:
         return tp / (tp + fn)
 # end
+
+def mean_squared_error(y_true, y_pred):
+    """均方误差评估函数"""
+    return np.average((y_true - y_pred)**2, axis=0)
+# end
+
+def r2_score(y_true, y_pred):
+    """决定系数评估函数"""
+    numerator = (y_true - y_pred)**2
+    denumerator = (y_true - np.average(y_true, axis=0))**2
+    return 1-(numerator.sum(axis=0)/denumerator.sum(axis=0))
+# end
