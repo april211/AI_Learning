@@ -3,7 +3,7 @@ from scipy.stats import f
 
 
 class StepwiseRegression:
-    """逐步回归算法类（贪心）"""
+    """向前逐步回归算法类（贪心）"""
     def fit(self, X, y):
         """训练函数"""
         return np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)     # 优化目标：最小均方误差（暂时先不用记录 w）
@@ -23,7 +23,7 @@ class StepwiseRegression:
         return (p_value > 0.95)                              # 若置信度大于 0.95 ，则返回 True
 
     def forward_selection(self, X, y):
-        """特征选择函数"""
+        """向前特征选择函数"""
         m, n = X.shape
         A, C = [0], [i for i in range(1, n)]
         while len(C) > 0:
@@ -31,6 +31,7 @@ class StepwiseRegression:
             MSE_min, j_min = float("inf"), -1                # 寻找再加一个特征之后，模型的最小 mse
             for j in C:
                 MSE_j = self.compute_mse(X[:, A + [j]], y)
+                print(A + [j])
                 if MSE_j < MSE_min:
                     MSE_min, j_min = MSE_j, j
             if self.f_test(MSE_A, MSE_min, m):               # 如果这个新模型的 mse 通过了 f检测，就接受它
