@@ -1,5 +1,5 @@
 import numpy as np
-
+import copy
 
 class StagewiseRegression:
     "特征选择算法：分段回归"
@@ -9,7 +9,7 @@ class StagewiseRegression:
         norms = np.linalg.norm(X, 2, axis=0).reshape(-1, 1)    # 求 X矩阵各列向量的 L2范数，构成 (n by 1)列向量
         w = np.zeros(n).reshape(-1, 1)
         t = 0                                          # 计数器
-        r = y                                          # 这实际上是 r的初始值 (w == 0)，这样写可简化计算
+        r = copy.deepcopy(y)                           # 这实际上是 r的初始值 (w == 0)，这样写可简化计算
         while t < N:
             c = X.T.dot(r) / norms                     # 计算相关系数（为简化运算，不除以由 r的L2范数 构成的矩阵）
             j_max = np.argmax(abs(c))                  # 找出相关系数矩阵中绝对值最小的列
@@ -22,7 +22,7 @@ class StagewiseRegression:
 
     def predict(self, X):
         """ 预测函数 """
-        return X.dot(self.w)
+        return X.dot(self.w)                            # 这里实际上使用了所有的特征进行了计算
 # end
 
 
