@@ -15,13 +15,13 @@ def generate_sample(m):
 
 np.random.seed(100)
 X, y = generate_sample(10)
-poly = PolynomialFeatures(degree=10)
+poly = PolynomialFeatures(degree=10)            # 多项式特征
 X_poly = poly.fit_transform(X)
+
 model = sr.StepwiseRegression()
 model.forward_selection(X_poly, y)              # 执行特征选择操作
 print(model.A)
 print(model.w)
-print(X_poly)
 
 plt.axis([-1, 1, -2, 2])
 plt.scatter(X, y)
