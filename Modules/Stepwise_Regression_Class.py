@@ -31,7 +31,6 @@ class StepwiseRegression:
             MSE_min, j_min = float("inf"), -1                # 寻找再加一个特征之后，模型的最小 mse
             for j in C:
                 MSE_j = self.compute_mse(X[:, A + [j]], y)
-                print(A + [j])
                 if MSE_j < MSE_min:
                     MSE_min, j_min = MSE_j, j
             if self.f_test(MSE_A, MSE_min, m):               # 如果这个新模型的 mse 通过了 f检测，就接受它
