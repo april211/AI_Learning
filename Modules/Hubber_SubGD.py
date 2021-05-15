@@ -55,5 +55,5 @@ class Hubber_SubGD:
         self.w /= N
 
     def predict(self, X):
-        """ 训练函数 """
+        """ 预测函数 """
         return X.dot(self.w.reshape(-1, 1))
