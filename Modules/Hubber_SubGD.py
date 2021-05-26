@@ -41,7 +41,7 @@ class Hubber_SubGD:
             # exterror = (2* self.epsilon / out_m)* norms + self.epsilon**2
 
             sumd = np.zeros((n, 1)).reshape(-1, 1)
-            for j in range(out_m):
+            for j in range(out_m):                          # 此处实际上可以使用向量对矩阵 X_out进行求和，尽量减少此类矩阵迭代
                 if outerror[j] > 0:
                     sumd = np.add(sumd, X_out[j, :].reshape(-1, 1))
                 elif outerror[j] < 0:
