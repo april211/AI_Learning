@@ -13,7 +13,7 @@ def accuracy_score(y_true, y_pred):
 # end
 
 def precision_score(y, z):
-    """ 精确率计算函数 """
+    """ 精确率计算函数 y: 标签值 z: 预测值"""
     tp = (z * y).sum()
     fp = (z * (1 - y)).sum()
     if tp + fp == 0:
