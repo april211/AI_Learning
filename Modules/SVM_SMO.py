@@ -1,4 +1,3 @@
-from ast import Lambda
 import numpy as np
 
 class SVM_SMO:
