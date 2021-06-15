@@ -2,6 +2,10 @@ import numpy as np
 
 class SVM_SMO:
     """ 支持向量机的SMO算法实现 """
+    def __init__(self) -> None:
+        pass
+    # end
+
     def get_H(self, Lambda, i, j, y):
         """ 计算Lambda[j]的上限 """
         if y[i] == y[j]:
@@ -21,10 +25,11 @@ class SVM_SMO:
     def smo(self, X, y, K, N):
         """ SMO算法实现主体 """
         m, n = X.shape
-        y = y.reshape(m,)                           # 确保 y为 ndarray类型，下面要用 np.multiply 做 hadamard product（不可以用 np.array！）
-        Lambda = np.zeros(m)                        # 初始化 Lambda的值（为 ndarray类型）
-        epsilon = 1e-8                              # 设定计算 0值，计算值小于此数视为 0
+        y = y.reshape(m, 1)                           # 下面要用 np.multiply 做 hadamard product
+        Lambda = np.zeros((m, 1))                     # 初始化 Lambda的值
+        epsilon = 1e-8                                # 设定计算 0值，计算值小于此数视为 0
         for r in range(N):
+            print(r)
             for i in range(m):
                 for j in range(m):
                     D_ij = 2* K[i][j] - K[i][i] - K[j][j]
