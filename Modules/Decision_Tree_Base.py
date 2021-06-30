@@ -76,8 +76,7 @@ class DecisionTreeBase:
         """ 针对·单个·测试样本进行预测（递归） """
         if r.left is None and r.right is None:
             return r.p
-        value = x[r.j]
-        if value <= r.theta:
+        if x[r.j] <= r.theta:
             return self.get_prediction(r.left, x)
         else:
             return self.get_prediction(r.right, x)
