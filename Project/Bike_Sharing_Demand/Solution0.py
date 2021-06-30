@@ -10,10 +10,10 @@ from sklearn.metrics import r2_score
 def get_data():
     """ 从本地 csv 文件中读入数据 """
     df = pd.read_csv("Project\\Bike_Sharing_Demand\\bike.csv")
-    df.datetime = df.datetime.apply(pd.to_datetime)
-    df['hour'] = df.datetime.apply(lambda x:x.hour)
+    df['datetime'] = df['datetime'].apply(pd.to_datetime)
+    df['hour'] = df['datetime'].apply(lambda x: x.hour)
     y = df['count'].values
-    df.drop(['datetime', 'casual', 'registered', 'count'], axis=1, inplace=True)
+    df.drop(['datetime','casual','registered','count'], 1, inplace = True)
     X = df.values
     return X, y
 # end
