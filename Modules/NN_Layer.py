@@ -27,7 +27,8 @@ class Layer:
 
     def back_propagation(self, delta_in, learning_rate):
         """ 反向传播经过该层时，调用此函数 """
-        d = self.activator.deriative(self.sums)* delta_in                       # 该层的 delta(r) 与 sums导函数的哈达马乘积得到 d(r)
+        # d = self.activator.deriative(self.sums)* delta_in                       # 该层的 delta(r) 与 sums导函数的哈达马乘积得到 d(r)
+        d = np.multiply(self.activator.deriative(self.sums), delta_in)
         self.delta_out = self.W.T.dot(d)                                        # delta(r-1)
         self.W_grad = d.dot(self.inputs.T)                                      # 计算损失函数关于 W的导数
         self.b_grad = d                                                         # 计算损失函数关于 b的导数
