@@ -33,7 +33,7 @@ loss = NN_Loss.LogarithmicLoss()
 
 model = NeuralNetwork(layers, loss)
 model.fit(X_train, Y_train, 50000, 0.01)
-V = model.predict(X_test)                       # 输出的是由 OneHot向量构成的矩阵
+V = model.predict(X_test)                       # 注意：输出的是与 OneHot向量同维度的一个矩阵（一个测试点对应一个 OneHot向量）
 
 PROBA = NN_Loss.softmax(V)                      # 得到 softmax矩阵
 y_pred = np.argmax(PROBA, axis=1)
