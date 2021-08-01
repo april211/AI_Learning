@@ -16,8 +16,8 @@ print(b)
 print(a.repeat(2, 1))           # H(axis=0), W(axis=1)
 print(a.repeat(1, 2))           # H(axis=0), W(axis=1)
 print(a.repeat(2, 1, 1))        # C(axis=2), H(axis=0), W(axis=1)
-
-
+print(a.repeat(2, 1).repeat(1, 1, 4))
+print(a.repeat(1, 2, 4))
 
 
 # https://pytorch.org/docs/stable/generated/torch.Tensor.repeat.html
