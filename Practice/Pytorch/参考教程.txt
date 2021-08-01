@@ -1,0 +1,2 @@
+https://pytorch.apachecn.org/docs/1.4/blitz/tensor_tutorial.html
+https://pytorch.org/docs/stable/torch.html
