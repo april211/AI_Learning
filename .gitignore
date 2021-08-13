@@ -4,3 +4,4 @@ tempCodeRunnerFile.cpp
 *.pyc
 .vs/
 .idea/
+*.onnx
